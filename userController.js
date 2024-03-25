@@ -13,14 +13,15 @@
 //   }
 // }
 
+const fakeUsers = [
+  { name: "John Doe", birthDate: "1990-05-15", wasSick: true, wasVaccinated: false },
+  { name: "Jane Smith", birthDate: "1985-10-20", wasSick: false, wasVaccinated: true },
+  // Add more fake user data as needed
+];
 
 async function getAllUsers(req, res) {
   // Fake user data
-  const fakeUsers = [
-    { name: "John Doe", birthDate: "1990-05-15", wasSick: true, wasVaccinated: false },
-    { name: "Jane Smith", birthDate: "1985-10-20", wasSick: false, wasVaccinated: true },
-    // Add more fake user data as needed
-  ];
+  
 
   try {
     // Simulate database query
@@ -33,10 +34,23 @@ async function getAllUsers(req, res) {
   }
 }
 
+function addUser(req, res) {
+  const { name, birthDate, wasSick, wasVaccinated } = req.body;
+  const newUser = {
+      name:name,
+      birthDate:birthDate,
+      wasSick:wasSick,
+      wasVaccinated:wasVaccinated
+  };
+  fakeUsers.push(newUser);
+  res.status(201).json(newUser); // Respond with the added user
+}
+
 
 // Add other controller functions as needed
 
 module.exports = {
   getAllUsers,
+  addUser
   // Add other controller functions here
 };

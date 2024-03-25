@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const userRoutes = require('./userRouter');
 const cors = require('cors');
+const userController = require('./userController');
 
 
 const app = express();
@@ -13,8 +13,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Define routes
-app.use('/users', userRoutes);
-// Add other routes as needed
+app.get('/users', userController.getAllUsers);
+app.post('/users', userController.addUser);
 
 // Start the server
 app.listen(port, () => {
