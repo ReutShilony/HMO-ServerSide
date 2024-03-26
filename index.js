@@ -10,11 +10,11 @@ app.use(cors());
 
 // Parse incoming requests data
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true })); // !!!
 
 // Define routes
 app.get('/users', userController.getAllUsers);
-app.post('/users', userController.addUser);
+app.post('/users', userController.createUser);
 
 // Start the server
 app.listen(port, () => {
