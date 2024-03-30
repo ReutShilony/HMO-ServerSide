@@ -85,7 +85,78 @@ async function getAllUsers(req, res) {
   }
 }
 
+
+async function deleteUser(req, res) {
+  const userId = req.params.id;
+
+  try {
+    // Delete user
+    const deleteUserQuery = `
+      DELETE FROM Users
+      WHERE ID = $1
+      RETURNING *;
+    `;
+    const deleteUserValues = [userId];
+    const deleteUserResult = await pool.query(deleteUserQuery, deleteUserValues);
+
+    res.status(200).json(deleteUserResult.rows[0]);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+
+  
+  
+}
+// update
+async function updateUser(req, res) {
+  const userId = req.params.id;
+  const { firstName, lastName, phone, cellphone, address, covidDetails } = req.body;
+  try {
+    // Update address details
+    const updateAddressQuery = `
+      UPDATE Address
+      SET City = $1, Street = $2, HouseNumber = $3
+      WHERE AddressID = (
+        SELECT AddressID
+        FROM Users
+        WHERE ID = $4
+      );
+    `;
+    const updateAddressValues = [address.city, address.street, address.houseNumber, userId];
+    await pool.query(updateAddressQuery, updateAddressValues);
+
+    // Update covid details
+    const updateCovidQuery = `
+      UPDATE CovidDetails
+      SET SickDate = $1, RecoveryDate = $2
+      WHERE CovidID = (
+        SELECT CovidDetailsID
+        FROM Users
+        WHERE ID = $3
+      );
+    `;
+    const updateCovidValues = [covidDetails.sickDate, covidDetails.recoveryDate, userId];
+    await pool.query(updateCovidQuery, updateCovidValues);
+
+    // Update user details
+    const updateUserQuery = `
+      UPDATE Users
+      SET FirstName = $1, LastName = $2, Phone = $3, Cellphone = $4
+      WHERE ID = $5
+      RETURNING *;
+    `;
+    const updateUserValues = [firstName, lastName, phone, cellphone, userId];
+    const updateUserResult = await pool.query(updateUserQuery, updateUserValues);
+
+    res.status(200).json(updateUserResult.rows[0]);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
 module.exports = {
   getAllUsers,
   createUser,
+  updateUser,
+  deleteUser
 };

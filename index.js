@@ -15,6 +15,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // !!!
 // Define routes
 app.get('/users', userController.getAllUsers);
 app.post('/users', userController.createUser);
+app.put('/users/:id', userController.updateUser); 
+app.delete('/users/:id', userController.deleteUser); 
 
 // Start the server
 app.listen(port, () => {
