@@ -57,6 +57,3 @@ The server operates with the following database schema:
 - **cors**: Middleware for enabling Cross-Origin Resource Sharing
 - **pg**: PostgreSQL client for Node.js
 
-## Author
-
-This server is maintained by [Your Name/Team]. For any inquiries or support, please contact [Your Contact Information].
